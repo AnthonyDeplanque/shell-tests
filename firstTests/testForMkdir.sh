@@ -8,10 +8,18 @@ FILE=${FOLDERS[-1]}
 unset FOLDERS[-1]
 ROOT_FOLDER=$PWD
 
-for FOLDER in ${FOLDERS[@]}
+# for (FOLDER in ${FOLDERS[@]})
+# do
+#     mkdir $FOLDER
+#     cd $FOLDER
+# done
+
+for (( i=0; i<${#FOLDERS[@]}; i++ ));
 do
+    FOLDER=${FOLDERS[i]}
     mkdir $FOLDER
     cd $FOLDER
 done
+
 touch $FILE
 cd $ROOT_FOLDER
