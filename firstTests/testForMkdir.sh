@@ -1,10 +1,17 @@
 #!/bin/bash
+STRING="test toto tata tutu tété titi"
+#convert a string into STRING
+FOLDERS=($STRING)
+#last array iteration
+FILE=${FOLDERS[-1]}
 
-RELATIVE="test toto trur toto tutu"
-DIRECTORIES=$( echo "$RELATIVE" | rev | cut -f 1 | rev )
-echo $DIRECTORIES
-i=0;
-# for ELEMENT in $RELATIVE
-# do
-#     echo $ELEMENT
-# done
+unset FOLDERS[-1]
+ROOT_FOLDER=$PWD
+
+for FOLDER in ${FOLDERS[@]}
+do
+    mkdir $FOLDER
+    cd $FOLDER
+done
+touch $FILE
+cd $ROOT_FOLDER
