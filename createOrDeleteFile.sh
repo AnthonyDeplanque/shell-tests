@@ -22,6 +22,11 @@ checkingFileExistence(){
     fi;
 }
 
+# not finished yet
+# I am trying to get an array with the provided file name like "./test/directory/directory/file"
+# the period will be deleted, and the slash are used to separate my array iterations
+# all array iterations are directories to create
+# and the last iteration is the file name to create
 getDirecoriesToCreateAndFile(){
     RELATIVE=$(sed 's/[.\/]/ /g' <<< $FICHIER)
     echo "$RELATIVE"
