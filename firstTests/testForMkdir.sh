@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RELATIVE="test toto trou toto tutu"
+RELATIVE="test toto trur toto tutu"
 DIRECTORIES=$( echo "$RELATIVE" | rev | cut -f 1 | rev )
 echo $DIRECTORIES
 i=0;
