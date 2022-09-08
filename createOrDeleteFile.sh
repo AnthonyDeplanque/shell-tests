@@ -22,14 +22,35 @@ checkingFileExistence(){
     fi;
 }
 
-# not finished yet
-# I am trying to get an array with the provided file name like "./test/directory/directory/file"
-# the period will be deleted, and the slash are used to separate my array iterations
-# all array iterations are directories to create
-# and the last iteration is the file name to create
-getDirecoriesToCreateAndFile(){
-    RELATIVE=$(sed 's/[.\/]/ /g' <<< $FICHIER)
-    echo "$RELATIVE"
+
+createPathAndFile(){
+
+ARRAY=$(sed 's/[\/]/ /g' <<< $FICHIER)
+
+FOLDERS=($ARRAY)
+#last array iteration
+FILE=${FOLDERS[-1]}
+unset FOLDERS[-1]
+ROOT_FOLDER=$PWD
+
+# for (FOLDER in ${FOLDERS[@]})
+# do
+#     mkdir $FOLDER
+#     cd $FOLDER
+# done
+
+for (( i=0; i<${#FOLDERS[@]}; i++ ));
+do
+    FOLDER=${FOLDERS[i]}
+    if [ $FOLDER != '.' ]; then
+        echo "$FOLDER créé dans $PWD"
+        mkdir -p $FOLDER
+        cd $FOLDER
+    fi
+done
+
+touch $FILE
+cd $ROOT_FOLDER
 }
 
 createFile(){
@@ -40,7 +61,7 @@ Voulez vous insérer du contenu ? (y/n)" CHOIX_INSERTION
         read -p "
 Voulez vous insérer du contenu ? (y/n)" CHOIX_INSERTION
     done
-    touch $FICHIER
+    createPathAndFile
     if [ $CHOIX_INSERTION == "y" ]; then
         read -p "
 Tapez ici ce que vous voulez insérer :" INSERTION
