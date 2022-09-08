@@ -2,7 +2,7 @@
 
 set -e
 
-usage(){
+function usage(){
     clear
     echo ""
     echo -e "\033[1;33m1. \033[1;32mCréer\033[0m un fichier"
@@ -12,7 +12,7 @@ usage(){
     echo ""
 }
 
-checkingFileExistence(){
+function checkingFileExistence(){
     if [ -f $FICHIER ]; then
         echo -e "\033[4;36m$FICHIER\033[0;32m existe\033[0m";
         R=0;
@@ -23,37 +23,39 @@ checkingFileExistence(){
 }
 
 
-createPathAndFile(){
+function createPathAndFile(){
 
-ARRAY=$(sed 's/[\/]/ /g' <<< $FICHIER)
+    ARRAY=$(sed 's/[\/]/ /g' <<< $FICHIER)
 
-FOLDERS=($ARRAY)
-#last array iteration
-FILE=${FOLDERS[-1]}
-unset FOLDERS[-1]
-ROOT_FOLDER=$PWD
+    FOLDERS=($ARRAY)
+    #last array iteration
+    FILE=${FOLDERS[-1]}
+    unset FOLDERS[-1]
+    ROOT_FOLDER=$PWD
 
-# for (FOLDER in ${FOLDERS[@]})
-# do
-#     mkdir $FOLDER
-#     cd $FOLDER
-# done
+    # for (FOLDER in ${FOLDERS[@]})
+    # do
+    #     mkdir $FOLDER
+    #     cd $FOLDER
+    # done
 
-for (( i=0; i<${#FOLDERS[@]}; i++ ));
-do
-    FOLDER=${FOLDERS[i]}
-    if [ $FOLDER != '.' ]; then
-        echo "$FOLDER créé dans $PWD"
-        mkdir -p $FOLDER
-        cd $FOLDER
-    fi
-done
+    for (( i=0; i<${#FOLDERS[@]}; i++ ));
+    do
+        FOLDER=${FOLDERS[i]}
+        
+        #do nothing if the first array iteration is a period
+        if [ $FOLDER != '.' ]; then
+            echo -e "\033[1;33m$FOLDER\033[0m créé dans \033[0;36m$PWD\033[0m"
+            mkdir -p $FOLDER
+            cd $FOLDER
+        fi
+    done
 
-touch $FILE
-cd $ROOT_FOLDER
+    touch $FILE
+    cd $ROOT_FOLDER
 }
 
-createFile(){
+function createFile(){
     read -p "
 Voulez vous insérer du contenu ? (y/n)" CHOIX_INSERTION
     while [[ $CHOIX_INSERTION != "y" && $CHOIX_INSERTION != "n" ]]
@@ -62,6 +64,7 @@ Voulez vous insérer du contenu ? (y/n)" CHOIX_INSERTION
 Voulez vous insérer du contenu ? (y/n)" CHOIX_INSERTION
     done
     createPathAndFile
+    echo ""
     if [ $CHOIX_INSERTION == "y" ]; then
         read -p "
 Tapez ici ce que vous voulez insérer :" INSERTION
@@ -74,7 +77,8 @@ Tapez ici ce que vous voulez insérer :" INSERTION
         exit 4
     fi
 }
-deleteFile(){
+
+function deleteFile(){
     rm $FICHIER
     checkingFileExistence
     if [ $R == 1 ]; then
@@ -84,10 +88,19 @@ deleteFile(){
     fi
 }
 
-abort(){
+function abort(){
     echo -e "\033[1;31mAnnulation\033[0m";
     exit 0;
 }
+
+
+#########################################################
+#                                                       #
+#                   - SCRIPT START -                    #
+#                                                       #
+#########################################################
+
+
 
 usage;
 
